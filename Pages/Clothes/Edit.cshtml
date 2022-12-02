@@ -1,0 +1,65 @@
+﻿@page
+@model Proiect_Magazin.Pages.Clothes.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Cloth</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Cloth.ID" />
+            <div class="form-group">
+                <label asp-for="Cloth.Name" class="control-label"></label>
+                <input asp-for="Cloth.Name" class="form-control" />
+                <span asp-validation-for="Cloth.Name" class="text-danger"></span>
+            </div>
+               <div class="form-group">
+                <label asp-for="Cloth.CategoryID" class="control-label">Category</label>
+                <select asp-for="Cloth.CategoryID" class="form-control" asp-items="ViewBag.CategoryID">
+                </select>
+                <span asp-validation-for="Cloth.CategoryID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cloth.DesignerID" class="control-label">Designer Name</label>
+                <select asp-for="Cloth.DesignerID" class="form-control" asp-items="ViewBag.DesignerID">
+                </select>
+
+                <span asp-validation-for="Cloth.DesignerID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cloth.SizeID" class="control-label">Size</label>
+                <select asp-for="Cloth.SizeID" class="form-control" asp-items="ViewBag.SizeID">
+                </select>
+                <span asp-validation-for="Cloth.SizeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cloth.Price" class="control-label"></label>
+                <input asp-for="Cloth.Price" class="form-control" />
+                <span asp-validation-for="Cloth.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cloth.CollectionID" class="control-label">Collection</label>
+                <select asp-for="Cloth.CollectionID" class="form-control" asp-items="ViewBag.CollectionID">
+                </select>
+                <span asp-validation-for="Cloth.CollectionID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
