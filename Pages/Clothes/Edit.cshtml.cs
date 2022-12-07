@@ -11,7 +11,8 @@ using Proiect_Magazin.Models;
 
 namespace Proiect_Magazin.Pages.Clothes
 {
-    public class EditModel : PageModel
+    public class EditModel : ClothMaterialsPageModel
+
     {
         private readonly Proiect_Magazin.Data.Proiect_MagazinContext _context;
 
@@ -25,17 +26,32 @@ namespace Proiect_Magazin.Pages.Clothes
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Cloth == null)
+            if (id == null )
             {
                 return NotFound();
             }
 
-            var cloth =  await _context.Cloth.FirstOrDefaultAsync(m => m.ID == id);
-            if (cloth == null)
+            Cloth =  await _context.Cloth
+                .Include(c => c.Designer)
+                .Include(c => c.Size)
+                .Include(c => c.Category)
+                .Include(c => c.Collection)
+                .Include(b => b.ClothMaterials).ThenInclude(b => b.Material)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Cloth == null)
             {
                 return NotFound();
             }
-            Cloth = cloth;
+           
+
+            PopulateAssignedMaterialData(_context, Cloth);
+            var designerList = _context.Designer.Select(x => new
+            {
+                x.ID,
+                DesignerName = x.LastName + " " + x.FirstName
+            });
             ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "ID",
 "CategoryName");
             ViewData["DesignerID"] = new SelectList(_context.Set<Designer>(), "ID",
@@ -49,37 +65,42 @@ namespace Proiect_Magazin.Pages.Clothes
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id, string[] selectedMaterials)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return Page();
+                return NotFound();
             }
 
-            _context.Attach(Cloth).State = EntityState.Modified;
+            var clothToUpdate = await _context.Cloth
+            .Include(c => c.Designer)
+                .Include(c => c.Size)
+                .Include(c => c.Category)
+                .Include(c => c.Collection)
+                .Include(c => c.ClothMaterials).ThenInclude(c => c.Material)
+            .FirstOrDefaultAsync(s => s.ID == id);
 
-            try
+            if (clothToUpdate == null)
             {
+                return NotFound();
+            }
+
+            if (await TryUpdateModelAsync<Cloth>(
+            clothToUpdate,
+            "Cloth",
+            c => c.Name, c => c.CategoryID,
+            c => c.Price, c => c.DesignerID, c => c.SizeID,c =>c.CollectionID))
+            {
+                UpdateClothMaterials(_context, selectedMaterials, clothToUpdate);
                 await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClothExists(Cloth.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
-        }
-
-        private bool ClothExists(int id)
-        {
-          return _context.Cloth.Any(e => e.ID == id);
+            
+            UpdateClothMaterials(_context, selectedMaterials, clothToUpdate);
+            PopulateAssignedMaterialData(_context, clothToUpdate);
+            return Page();
         }
     }
+
 }
+

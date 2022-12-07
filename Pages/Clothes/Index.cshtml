@@ -10,11 +10,23 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+<form asp-page="./Index" method="get">
+ <div class="form-actions no-color">
+ <p>
+ Find by Cloth Name:
+ <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">   
                 @Html.DisplayNameFor(model => model.Cloth[0].Name)
+                </a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cloth[0].Category.CategoryName)
@@ -31,21 +43,31 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cloth[0].Collection.CollectionName)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cloth[0].ClothMaterials)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Cloth) {
-        <tr>
+@foreach (var item in Model.ClothD.Clothes) {
+            string selectedRow = "";
+            if (item.ID == Model.ClothID)
+            {
+                selectedRow = "table-success";
+            }
+
+            <tr class="@selectedRow">
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Designer.DesignerName)
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Designer.FirstName)
+                    @Html.DisplayFor(modelItem => item.Designer.LastName)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Size.SizeName)
             </td>
@@ -55,6 +77,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Collection.CollectionName)
             </td>
+                <td>
+                    @{
+                        foreach (var material in item.ClothMaterials)
+                        {
+                            @material.Material.ID @: @material.Material.MaterialName <br />
+                        }
+                    }
+                </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |

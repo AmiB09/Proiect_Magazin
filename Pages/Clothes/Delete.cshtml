@@ -25,11 +25,15 @@
             @Html.DisplayFor(model => model.Cloth.Category)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Cloth.Designer)
+            @Html.DisplayNameFor(model => model.Cloth.Designer.DesignerName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Cloth.Designer)
+            @Html.DisplayFor(model => model.Cloth.Designer.DesignerName)
+
         </dd>
+        @{
+            ViewData["DesignerName"] = "DesignerName";
+        }
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Cloth.Size)
         </dt>

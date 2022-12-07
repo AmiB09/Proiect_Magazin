@@ -19,5 +19,6 @@ namespace Proiect_Magazin.Models
         public decimal Price { get; set; }
         public int? CollectionID { get; set; }
         public Collection? Collection { get; set; }
+        public ICollection<ClothMaterial>? ClothMaterials { get; set; }
     }
 }
