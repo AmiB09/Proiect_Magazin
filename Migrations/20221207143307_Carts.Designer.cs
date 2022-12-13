@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proiect_Magazin.Data;
 
@@ -11,9 +12,10 @@ using Proiect_Magazin.Data;
 namespace Proiect_Magazin.Migrations
 {
     [DbContext(typeof(Proiect_MagazinContext))]
-    partial class Proiect_MagazinContextModelSnapshot : ModelSnapshot
+    [Migration("20221207143307_Carts")]
+    partial class Carts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,29 +23,6 @@ namespace Proiect_Magazin.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Proiect_Magazin.Models.Cart", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<int?>("ClothID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ClothID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Cart");
-                });
 
             modelBuilder.Entity("Proiect_Magazin.Models.Category", b =>
                 {
@@ -197,55 +176,6 @@ namespace Proiect_Magazin.Migrations
                     b.ToTable("Size");
                 });
 
-            modelBuilder.Entity("Proiect_Magazin.Models.User", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<string>("Adress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PostalCode")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("User");
-                });
-
-            modelBuilder.Entity("Proiect_Magazin.Models.Cart", b =>
-                {
-                    b.HasOne("Proiect_Magazin.Models.Cloth", "Cloth")
-                        .WithMany()
-                        .HasForeignKey("ClothID");
-
-                    b.HasOne("Proiect_Magazin.Models.User", "User")
-                        .WithMany("Carts")
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("Cloth");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Proiect_Magazin.Models.Cloth", b =>
                 {
                     b.HasOne("Proiect_Magazin.Models.Category", "Category")
@@ -320,11 +250,6 @@ namespace Proiect_Magazin.Migrations
             modelBuilder.Entity("Proiect_Magazin.Models.Size", b =>
                 {
                     b.Navigation("Clothes");
-                });
-
-            modelBuilder.Entity("Proiect_Magazin.Models.User", b =>
-                {
-                    b.Navigation("Carts");
                 });
 #pragma warning restore 612, 618
         }

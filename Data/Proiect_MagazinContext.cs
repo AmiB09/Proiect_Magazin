@@ -25,5 +25,9 @@ namespace Proiect_Magazin.Data
         public DbSet<Proiect_Magazin.Models.Category> Category { get; set; }
 
         public DbSet<Proiect_Magazin.Models.Material> Material { get; set; }
+
+        public DbSet<Proiect_Magazin.Models.User> User { get; set; }
+
+        public DbSet<Proiect_Magazin.Models.Cart> Cart { get; set; }
     }
 }
