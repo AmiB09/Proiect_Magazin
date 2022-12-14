@@ -19,6 +19,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cart[0].Cloth)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart[0].Cloth.Designer)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -26,11 +29,14 @@
 @foreach (var item in Model.Cart) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.User.ID)
+                @Html.DisplayFor(modelItem => item.User.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cloth.ID)
+                @Html.DisplayFor(modelItem => item.Cloth.Name)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cloth.Designer.DesignerName)
+                </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |

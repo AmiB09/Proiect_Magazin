@@ -27,6 +27,7 @@ namespace Proiect_Magazin.Pages.Carts
             {
                 Cart = await _context.Cart
                 .Include(c => c.Cloth)
+                .ThenInclude(b => b.Designer)
                 .Include(c => c.User).ToListAsync();
             }
         }

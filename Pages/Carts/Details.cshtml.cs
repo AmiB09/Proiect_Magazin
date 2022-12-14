@@ -28,7 +28,10 @@ namespace Proiect_Magazin.Pages.Carts
                 return NotFound();
             }
 
-            var cart = await _context.Cart.FirstOrDefaultAsync(m => m.ID == id);
+            var cart = await _context.Cart
+                .Include(i=>i.User)
+                .Include(i => i.Cloth)
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (cart == null)
             {
                 return NotFound();

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Proiect_Magazin.Data;
 using Proiect_Magazin.Models;
 
@@ -21,8 +22,18 @@ namespace Proiect_Magazin.Pages.Carts
 
         public IActionResult OnGet()
         {
+            var clothList = _context.Cloth
+                .Include(b => b.Designer)
+                .Include(b => b.Size)
+                .Include(b => b.Collection)
+ .Select(x => new
+ {
+     x.ID,
+    ItemFullName = x.Name + " - " + x.Designer.LastName + " " +
+x.Designer.FirstName + " - " +x.Size.SizeName + " - " +x.Collection.CollectionName
+ });
 
-        ViewData["ClothID"] = new SelectList(_context.Cloth, "ID", "Name");
+            ViewData["ClothID"] = new SelectList(clothList, "ID", "ItemFullName");
         ViewData["UserID"] = new SelectList(_context.User, "ID", "FullName");
             return Page();
         }

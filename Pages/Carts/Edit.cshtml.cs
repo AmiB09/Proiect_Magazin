@@ -36,8 +36,8 @@ namespace Proiect_Magazin.Pages.Carts
                 return NotFound();
             }
             Cart = cart;
-           ViewData["ClothID"] = new SelectList(_context.Cloth, "ID", "ID");
-           ViewData["UserID"] = new SelectList(_context.User, "ID", "ID");
+           ViewData["ClothID"] = new SelectList(_context.Cloth, "ID", "Name");
+           ViewData["UserID"] = new SelectList(_context.User, "ID", "FullName");
             return Page();
         }
 

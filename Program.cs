@@ -1,12 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Proiect_Magazin.Data;
+using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<Proiect_MagazinContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Proiect_MagazinContext") ?? throw new InvalidOperationException("Connection string 'Proiect_MagazinContext' not found.")));
+builder.Services.AddDbContext<ShopIdentityContext>(options =>
+
+options.UseSqlServer(builder.Configuration.GetConnectionString("Proiect_MagazinContext") ?? throw new InvalidOperationException("Connectionstring 'Proiect_MagazinContext' not found.")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ShopIdentityContext>();
 
 var app = builder.Build();
 
@@ -22,6 +29,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 
