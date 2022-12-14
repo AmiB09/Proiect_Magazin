@@ -9,6 +9,8 @@ namespace Proiect_Magazin.Models
     {
         public int ID { get; set; }
         [Display(Name = "Cloth name")]
+        [StringLength(150, MinimumLength=3)]
+        [Required]
         public string Name { get; set; }
         public int? CategoryID { get; set; }
         public Category? Category { get; set; }
@@ -16,6 +18,8 @@ namespace Proiect_Magazin.Models
         public Designer? Designer { get; set; }
         public int? SizeID { get; set; }
         public Size? Size { get; set; }
+        [Column(TypeName = "decimal(6, 2)")]
+        [Range(0.01, 500)]
         public decimal Price { get; set; }
         public int? CollectionID { get; set; }
         public Collection? Collection { get; set; }
